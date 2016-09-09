@@ -57,6 +57,36 @@
 }
 
 - (IBAction)saveBookDetail:(id)sender {
+    if (![self.bookTitle.text isEqualToString:@""]) {
+        if (!self.book) {
+            self.book = [[CKRecord alloc] initWithRecordType:@"Book"];
+        }
+        self.book[kBookTitle] = self.bookTitle.text;
+        self.book[kBookAuthor] = self.author.text;
+        self.book[kBookPrice] = self.price.text;
+        self.book[kBookDescription] = self.bookDescription.text;
+        
+        if (self.buttonImage.currentImage) {
+            NSData *data = UIImageJPEGRepresentation(self.buttonImage.imageView.image, 0.2f);
+            NSURL *fileUrl = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+            if ([data writeToURL:fileUrl atomically:YES]) {
+                CKAsset *imageAsset = [[CKAsset alloc] initWithFileURL:fileUrl];
+                self.book[kBookImage] = imageAsset;
+            }
+        }
+        CKContainer *container = [CKContainer defaultContainer];
+        CKDatabase *database = [container publicCloudDatabase];
+        [database saveRecord:self.book completionHandler:^(CKRecord *record, NSError *error) {
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^() {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success" message:@"Saved!" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                    [alert addAction:alertAction];
+                    [self presentViewController:alert animated:YES completion:nil];
+                });
+            }
+        }];
+    }
 }
 
 - (IBAction)pickImage:(id)sender {
