@@ -13,7 +13,7 @@
 
 @interface ListBookTableViewController ()
 
-@property (strong, nonatomic) NSArray *listBook;
+@property (strong, nonatomic) NSMutableArray *listBook;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @end
@@ -38,7 +38,7 @@
     CKQuery *query = [[CKQuery alloc] initWithRecordType:@"Book" predicate:predicate];
     [database performQuery:query inZoneWithID:nil completionHandler:^(NSArray *result, NSError *error) {
         if (!error) {
-            self.listBook = [[NSArray alloc] initWithArray:result];
+            self.listBook = [[NSMutableArray alloc] initWithArray:result];
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self.tableView reloadData];
                 // End the refreshing
@@ -92,17 +92,29 @@
     return YES;
 }
 
-/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        CKContainer *container = [CKContainer defaultContainer];
+        CKDatabase *database = [container publicCloudDatabase];
+        CKRecord *deleteRecord = [self.listBook objectAtIndex:indexPath.row];
+        [database deleteRecordWithID:deleteRecord.recordID completionHandler:^(CKRecordID *recordID, NSError *error) {
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^() {
+                    [self.listBook removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success" message:@"Deleted!" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+                    [alert addAction:alertAction];
+                    [self presentViewController:alert animated:YES completion:nil];
+                });
+            }
+        }];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
 
 /*
 // Override to support rearranging the table view.
