@@ -81,7 +81,14 @@
     
     CKRecord *record = [self.listBook objectAtIndex:indexPath.row];
     cell.textLabel.text = record[kBookTitle];
-    cell.detailTextLabel.text = record[kBookAuthor];
+    CKReference *authorReference = record[kBookAuthor];
+    
+    CKDatabase *database = [[CKContainer defaultContainer] publicCloudDatabase];
+    [database fetchRecordWithID:authorReference.recordID completionHandler:^(CKRecord *record, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^(){
+           cell.detailTextLabel.text = record[kAuthorName];
+        });
+    }];
     
     return cell;
 }

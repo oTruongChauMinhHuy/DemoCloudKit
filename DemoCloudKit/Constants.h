@@ -18,3 +18,5 @@
 #define kBookPrice  @"Price"
 #define kBookDescription    @"Description"
 #define kBookImage  @"Image"
+
+#define kAuthorName @"Name"

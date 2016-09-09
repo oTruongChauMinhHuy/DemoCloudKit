@@ -51,7 +51,7 @@
                     <navigationItem key="navigationItem" id="jLW-9d-Spa">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ACs-JR-UDt">
                             <connections>
-                                <segue destination="YzA-By-ehI" kind="push" id="Bx1-iy-XH9"/>
+                                <segue destination="YzA-By-ehI" kind="push" id="bZr-ij-djb"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

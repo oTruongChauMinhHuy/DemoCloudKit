@@ -9,10 +9,13 @@
 #import "Constants.h"
 #import "BookDetailViewController.h"
 
-@interface BookDetailViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface BookDetailViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *buttonImage;
 @property (weak, nonatomic) IBOutlet UITextField *bookTitle;
+
 @property (weak, nonatomic) IBOutlet UITextField *author;
+@property (weak, nonatomic) CKRecord *authorRecord;
+
 @property (weak, nonatomic) IBOutlet UITextField *price;
 @property (weak, nonatomic) IBOutlet UITextView *bookDescription;
 
@@ -20,12 +23,23 @@
 
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
 
+@property (strong, nonatomic) NSMutableArray *listAuthor;
+@property (strong, nonatomic) UIPickerView *authorPickerView;
+
 @end
 
 @implementation BookDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initPickerAuthorview];
+    self.author.delegate = self;
+    self.authorPickerView = [[UIPickerView alloc] init];
+    self.authorPickerView.delegate = self;
+    self.authorPickerView.dataSource = self;
+    [self.authorPickerView setShowsSelectionIndicator:YES];
+    
+    self.author.inputView = self.authorPickerView;
     //Set border for book description text view
     [self.bookDescription.layer setBorderColor:[[UIColor grayColor] CGColor]];
     [self.bookDescription.layer setBorderWidth:0.5f];
@@ -56,13 +70,36 @@
     
 }
 
+- (void)initPickerAuthorview {
+    CKContainer *container = [CKContainer defaultContainer];
+    CKDatabase *database = [container publicCloudDatabase];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+    CKQuery *query = [[CKQuery alloc] initWithRecordType:@"Author" predicate:predicate];
+    
+    [database performQuery:query inZoneWithID:nil completionHandler:^(NSArray <CKRecord *> *result, NSError *error) {
+        if (!error) {
+            if (result) {
+                self.listAuthor = [[NSMutableArray alloc] initWithArray:result];
+            }
+        } else {
+            NSLog(@"%s -- %@", __func__, error);
+        }
+    }];
+}
+
 - (IBAction)saveBookDetail:(id)sender {
     if (![self.bookTitle.text isEqualToString:@""]) {
         if (!self.book) {
             self.book = [[CKRecord alloc] initWithRecordType:@"Book"];
         }
         self.book[kBookTitle] = self.bookTitle.text;
-        self.book[kBookAuthor] = self.author.text;
+        
+        if (self.authorRecord) {
+            CKReference *authorReference = [[CKReference alloc] initWithRecordID:self.authorRecord.recordID action:CKReferenceActionNone];
+            self.book[kBookAuthor] = authorReference;
+        }
+    
         self.book[kBookPrice] = self.price.text;
         self.book[kBookDescription] = self.bookDescription.text;
         
@@ -110,6 +147,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Author picker view
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return [self.listAuthor count];
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    CKRecord *author = [self.listAuthor objectAtIndex:row];
+    return author[kAuthorName];
+}
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    self.authorRecord = [self.listAuthor objectAtIndex:row];
+    self.author.text = self.authorRecord[kAuthorName];
+}
 /*
 #pragma mark - Navigation
 
