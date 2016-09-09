@@ -6,16 +6,16 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller-->
+        <!--List Book Table View Controller-->
         <scene sceneID="tLx-Kd-OpV">
             <objects>
-                <tableViewController id="NaX-vL-7Gs" sceneMemberID="viewController">
+                <tableViewController id="NaX-vL-7Gs" customClass="ListBookTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="801-NL-XtN">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="2WT-7o-e2l" detailTextLabel="5dy-QN-lWY" style="IBUITableViewCellStyleSubtitle" id="ozU-2d-eMk">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BookItem" textLabel="2WT-7o-e2l" detailTextLabel="5dy-QN-lWY" style="IBUITableViewCellStyleSubtitle" id="ozU-2d-eMk">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ozU-2d-eMk" id="4DR-uh-XrK">
@@ -60,10 +60,10 @@
             </objects>
             <point key="canvasLocation" x="3122" y="-918"/>
         </scene>
-        <!--View Controller-->
+        <!--Book Detail View Controller-->
         <scene sceneID="8Uo-fB-bC6">
             <objects>
-                <viewController id="YzA-By-ehI" sceneMemberID="viewController">
+                <viewController id="YzA-By-ehI" customClass="BookDetailViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6sP-S8-qCl"/>
                         <viewControllerLayoutGuide type="bottom" id="CAP-6L-TH8"/>
@@ -72,13 +72,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CN5-74-F8S">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CN5-74-F8S">
                                 <rect key="frame" x="220" y="72" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="Hg9-hY-RE2"/>
                                     <constraint firstAttribute="height" constant="160" id="LUM-aN-0Dt"/>
                                 </constraints>
                                 <state key="normal" backgroundImage="upload-image-thumb"/>
+                                <connections>
+                                    <action selector="pickImage:" destination="YzA-By-ehI" eventType="touchUpInside" id="RoS-5K-DXT"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4sD-2m-fTj">
                                 <rect key="frame" x="130" y="240" width="450" height="30"/>
@@ -168,8 +171,20 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="oP3-nF-xn1">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="0L7-ho-ws5"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="0L7-ho-ws5">
+                            <connections>
+                                <action selector="saveBookDetail:" destination="YzA-By-ehI" id="nJr-Yt-KJY"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="author" destination="dQo-5Z-cWP" id="ELQ-S9-Q7E"/>
+                        <outlet property="bookDescription" destination="E34-aV-F7D" id="YkG-5x-Tcm"/>
+                        <outlet property="bookTitle" destination="4sD-2m-fTj" id="P4b-Ks-uTm"/>
+                        <outlet property="buttonImage" destination="CN5-74-F8S" id="hAj-0w-NjQ"/>
+                        <outlet property="price" destination="mhx-Wk-7jG" id="TbQ-XG-lae"/>
+                        <outlet property="saveButton" destination="0L7-ho-ws5" id="CxA-yR-4rn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xXn-HM-RfU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -198,6 +213,6 @@
         <image name="upload-image-thumb" width="300" height="300"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Bx1-iy-XH9"/>
+        <segue reference="ZhJ-hO-dSP"/>
     </inferredMetricsTieBreakers>
 </document>
