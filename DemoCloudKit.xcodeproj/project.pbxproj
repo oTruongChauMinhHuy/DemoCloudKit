@@ -13,6 +13,7 @@
 		92D084481D7FC72A00A90627 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92D084461D7FC72A00A90627 /* Main.storyboard */; };
 		92D0844A1D7FC72A00A90627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92D084491D7FC72A00A90627 /* Assets.xcassets */; };
 		92D0844D1D7FC72A00A90627 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92D0844B1D7FC72A00A90627 /* LaunchScreen.storyboard */; };
+		92F56B1A1D8256D10098E467 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92F56B191D8256D10098E467 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		92D084491D7FC72A00A90627 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		92D0844C1D7FC72A00A90627 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		92D0844E1D7FC72A00A90627 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92F56B181D8256CF0098E467 /* DemoCloudKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DemoCloudKit.entitlements; sourceTree = "<group>"; };
+		92F56B191D8256D10098E467 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92F56B1A1D8256D10098E467 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +46,7 @@
 		92D084311D7FC72A00A90627 = {
 			isa = PBXGroup;
 			children = (
+				92F56B191D8256D10098E467 /* CloudKit.framework */,
 				92D0843C1D7FC72A00A90627 /* DemoCloudKit */,
 				92D0843B1D7FC72A00A90627 /* Products */,
 			);
@@ -58,6 +63,7 @@
 		92D0843C1D7FC72A00A90627 /* DemoCloudKit */ = {
 			isa = PBXGroup;
 			children = (
+				92F56B181D8256CF0098E467 /* DemoCloudKit.entitlements */,
 				92D084401D7FC72A00A90627 /* AppDelegate.h */,
 				92D084411D7FC72A00A90627 /* AppDelegate.m */,
 				92D084431D7FC72A00A90627 /* ViewController.h */,
@@ -110,6 +116,12 @@
 				TargetAttributes = {
 					92D084391D7FC72A00A90627 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = T28UGK7CB9;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -263,6 +275,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DemoCloudKit/DemoCloudKit.entitlements;
 				INFOPLIST_FILE = DemoCloudKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = huytcm.DemoCloudKit;
@@ -274,6 +287,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DemoCloudKit/DemoCloudKit.entitlements;
 				INFOPLIST_FILE = DemoCloudKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = huytcm.DemoCloudKit;
@@ -300,6 +314,7 @@
 				92D084531D7FC72A00A90627 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
